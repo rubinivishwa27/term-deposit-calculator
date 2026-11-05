@@ -1,4 +1,4 @@
-# Term Deposit Calculator (BEN Code Exercise)
+# Term Deposit Calculator
 
 An enterprise-grade Banking Term Deposit Calculation Engine built on Salesforce / nCino architecture. Features clean separation of concerns, defensive domain validation, precision currency rounding, an interactive Lightning Web Component (LWC) with custom banking styles, and 100% unit test coverage.
 

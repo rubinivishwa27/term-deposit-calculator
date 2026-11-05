@@ -1,0 +1,114 @@
+<template>
+    <div class="calculator-container">
+        <header class="calc-header">
+            <h1 class="calc-title">Calculate your returns</h1>
+            <p class="calc-subtitle">
+                Use our deposit and savings calculator to forecast the return on your term deposit investment.
+            </p>
+        </header>
+
+        <div class="calc-grid">
+            <div class="input-panel">
+                <div class="field-group">
+                    <label class="field-label">
+                        Principal
+                        <span class="info-icon" title="Initial principal amount">i</span>
+                    </label>
+                    <lightning-input type="number" variant="label-hidden" name="principal" value={principal}
+                        placeholder="0.00" formatter="currency" step="0.01" onchange={handleChange}>
+                    </lightning-input>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">
+                        Interest rate (% p.a.)
+                        <span class="info-icon" title="Annualized nominal interest rate">i</span>
+                    </label>
+                    <lightning-input type="number" variant="label-hidden" name="interestRate" value={interestRate}
+                        placeholder="0.00" step="0.01" onchange={handleChange}>
+                    </lightning-input>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">
+                        Investment term (Years)
+                        <span class="info-icon" title="Duration of deposit in full years">i</span>
+                    </label>
+                    <lightning-input type="number" variant="label-hidden" name="termYears" value={termYears}
+                        placeholder="0" min="1" step="1" onchange={handleChange}>
+                    </lightning-input>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">
+                        Interest paid
+                        <span class="info-icon" title="Compounding & payout schedule">i</span>
+                    </label>
+                    <div class="pill-container">
+                        <template for:each={frequencyPills} for:item="pill">
+                            <button key={pill.value} type="button" data-value={pill.value} class={pill.className}
+                                onclick={handlePillSelect}>
+                                {pill.label}
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-primary" onclick={handleCalculate}>
+                    Calculate Returns
+                </button>
+
+                <template if:true={errorMessage}>
+                    <div class="error-box" role="alert">
+                        {errorMessage}
+                    </div>
+                </template>
+            </div>
+
+            <div class="result-panel">
+                <div class="summary-card">
+                    <div class="summary-title">Summary Projection</div>
+
+                    <div class="summary-row">
+                        <span>Starting Deposit:</span>
+                        <strong>${principalFormatted}</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Term Duration:</span>
+                        <strong>{termDisplay}</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Interest Paid:</span>
+                        <strong>{selectedFrequencyLabel}</strong>
+                    </div>
+
+                    <template if:true={result}>
+                        <div class="summary-row">
+                            <span>Total Interest Earned:</span>
+                            <strong style="color: #0e9f6e;">+${result.totalInterestEarned}</strong>
+                        </div>
+
+                        <div class="summary-row highlight">
+                            <span>Final Balance:</span>
+                            <span>${result.finalBalance}</span>
+                        </div>
+                    </template>
+
+                    <template if:false={result}>
+                        <div class="summary-row">
+                            <span>Total Interest Earned:</span>
+                            <strong>$0.00</strong>
+                        </div>
+
+                        <div class="summary-row highlight">
+                            <span>Final Balance:</span>
+                            <span>$0.00</span>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
